@@ -6,7 +6,7 @@ $users = file_exists($file) ? json_decode(file_get_contents($file), true) : [];
 
 
 $adminUser = "admin";
-$adminPass = "12345"; 
+$adminPass = "123"; 
 $adminHash = password_hash($adminPass, PASSWORD_DEFAULT);
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {

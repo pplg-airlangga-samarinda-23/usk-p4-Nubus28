@@ -14,7 +14,8 @@ CREATE TABLE Book (
     id INT AUTO_INCREMENT PRIMARY KEY,
     judul VARCHAR(255) NOT NULL,
     pengarang VARCHAR(255),
-    deskripsi TEXT
+    deskripsi TEXT,
+    genre VARCHAR(100)
 );
 
 -- 3. Tabel Peminjaman
