@@ -21,14 +21,15 @@ structure
              ---->perpustakaan.sql
            [Peminjaman]
       ---->
-      dashboar_admin.php
-      dashboar_anggota.php
-      form_pinjam.php
-      index.php (main web)
-      login.php
-      logout.php
-      register.php
-      users.json (save user)
+      [main thing include login,borrowing and main web]
+      >dashboar_admin.php
+      >dashboar_anggota.php
+      >form_pinjam.php
+      >index.php (main web)
+      >login.php
+      >logout.php
+      >register.php
+      >users.json (save user)
 Tools
 (php,vscode,xampp)
 Fitur
