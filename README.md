@@ -33,7 +33,13 @@ Tools
 (php,vscode,xampp)
 Fitur
 ---->Admin
-     (can do CRUD for new book)
+     (can login with special password and user [you can change if you want])
+     (can do create book edit for book delete book and read the book so user can borrowing book because admin was making book)
      (can delete and edit for user)
 ---->Anggota
      (can register for having user and password to dashboard so user can borrow book or returning)
+     (for user can login with any user and pw but user need to regsit firts or if having account just login it)
+
+
+and that's all for my code since it's just was my firts making online library so
+i'm sorry if there's still not really good
