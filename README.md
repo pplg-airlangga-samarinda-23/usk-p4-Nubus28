@@ -35,10 +35,14 @@ Fitur
 ---->Admin
      (can login with special password and user [you can change if you want])
      (can do create book edit for book delete book and read the book so user can borrowing book because admin was making book)
+     (also admin can update current user login by history on admin dashboard)
+     (admin can removing history from user borrowing a book so not stucking)
      (can delete and edit for user)
 ---->Anggota
      (can register for having user and password to dashboard so user can borrow book or returning)
      (for user can login with any user and pw but user need to regsit firts or if having account just login it)
+     (user can borrow as many he want but [if admin only put like 1 or 2 user only can borrow that)
+     (user can see status book so user can see what curent book ongoing)
 
 
 and that's all for my code since it's just was my firts making online library so
