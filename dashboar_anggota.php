@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,12 +16,13 @@
         exit;
     }
     ?>
-    
+
     <h1>Member Dashboard</h1>
     <a href="logout.php">Logout</a>
     
     <h2>Selamat datang, <?php echo $_SESSION['user']; ?></h2>
-        
+       
+
         <h3>Layanan Peminjaman Buku</h3>
         <p>
             <a href="form_pinjam.php">Pinjam Buku</a><br><br>

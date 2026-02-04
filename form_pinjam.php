@@ -11,9 +11,9 @@ $user_result = $conn->query("SELECT id FROM User WHERE username = '" . $conn->re
 $user = $user_result->fetch_assoc();
 $user_id = $user['id'];
 
-// Proses pinjam
+// ================== PROSES PINJAM ==================
 if (isset($_POST['pinjam'])) {
-    $id_book = $_POST['id_book'];
+    $id_book = (int)$_POST['id_book'];
     $tgl_pinjam = date("Y-m-d");
 
     $cek = $conn->query("SELECT stok FROM Book WHERE id = $id_book");
@@ -28,9 +28,9 @@ if (isset($_POST['pinjam'])) {
     }
 }
 
-// Proses kembali
+// ================== PROSES KEMBALI ==================
 if (isset($_POST['kembali'])) {
-    $id_pinjam = $_POST['id_pinjam'];
+    $id_pinjam = (int)$_POST['id_pinjam'];
     $tgl_kembali = date("Y-m-d");
 
     $conn->query("UPDATE peminjaman SET tgl_kembali = '$tgl_kembali' WHERE id = $id_pinjam");
@@ -46,10 +46,10 @@ if (isset($_POST['kembali'])) {
     echo "<p style='color:blue;'>Buku berhasil dikembalikan!</p>";
 }
 
-// Ambil semua buku
+// ================== AMBIL SEMUA BUKU ==================
 $books = $conn->query("SELECT * FROM Book");
 
-// Ambil riwayat peminjaman user
+// ================== AMBIL RIWAYAT PEMINJAMAN ==================
 $peminjaman = $conn->query("
     SELECT p.id, b.judul, b.genre, p.tgl_pinjam, p.tgl_kembali 
     FROM peminjaman p 
@@ -63,7 +63,7 @@ $peminjaman = $conn->query("
     <meta charset="UTF-8">
     <title>Daftar Buku</title>
     <style>
-        table { border-collapse: collapse; width: 80%; }
+        table { border-collapse: collapse; width: 80%; margin-bottom: 20px; }
         th, td { border: 1px solid #333; padding: 8px; text-align: center; }
         th { background: #eee; }
         .habis { color: red; font-weight: bold; }
@@ -72,6 +72,58 @@ $peminjaman = $conn->query("
 </head>
 <body>
     <h1>Daftar Buku</h1>
+
+    <!-- Form Pencarian -->
+    <h3>Cari Buku</h3>
+    <form method="GET" action="">
+        <input type="text" name="search" placeholder="Masukkan judul buku..." required>
+        <button type="submit">Cari</button>
+    </form>
+
+    <?php
+    // ================== HASIL PENCARIAN ==================
+    if (isset($_GET['search'])) {
+        $search = $conn->real_escape_string($_GET['search']);
+        $query = "SELECT * FROM Book WHERE judul LIKE '%$search%'";
+        $result = $conn->query($query);
+
+        if ($result && $result->num_rows > 0) {
+            echo "<h3>Hasil Pencarian:</h3>";
+            echo "<table>
+                    <tr>
+                        <th>Judul</th>
+                        <th>Genre</th>
+                        <th>Stok</th>
+                        <th>Aksi</th>
+                    </tr>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>
+                        <td>{$row['judul']}</td>
+                        <td>{$row['genre']}</td>
+                        <td class='" . ($row['stok'] > 0 ? "tersedia" : "habis") . "'>
+                            " . ($row['stok'] > 0 ? $row['stok'] : "Habis") . "
+                        </td>
+                        <td>";
+                if ($row['stok'] > 0) {
+                    echo "<form method='POST' style='display:inline;'>
+                            <input type='hidden' name='id_book' value='{$row['id']}'>
+                            <button type='submit' name='pinjam'>Pinjam</button>
+                          </form>";
+                } else {
+                    echo "Tidak tersedia";
+                }
+                echo "</td>
+                      </tr>";
+            }
+            echo "</table><hr>";
+        } else {
+            echo "<p>Buku tidak ditemukan.</p><hr>";
+        }
+    }
+    ?>
+
+    <!-- Daftar Buku -->
+    <h2>Semua Buku</h2>
     <table>
         <tr>
             <th>Judul</th>
@@ -100,6 +152,7 @@ $peminjaman = $conn->query("
         <?php } ?>
     </table>
 
+    <!-- Riwayat Peminjaman -->
     <h2>Riwayat Peminjaman</h2>
     <table>
         <tr>
