@@ -25,18 +25,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Tambah Buku</title>
+    <title>Add Book</title>
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <div class="auth-container">
         <form class="auth-form" method="POST">
-            <h1>Tambah Buku</h1>
+            <h1>Add Book</h1>
 
-            <label>Judul:</label>
+            <label>Namebook:</label>
             <input type="text" name="judul" required>
 
-            <label>Pengarang:</label>
+            <label>Author:</label>
             <input type="text" name="pengarang">
 
             <label>Genre:</label>
@@ -46,14 +46,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <option value="Comedy">Comedy</option>
             </select>
 
-            <label>Deskripsi:</label>
+            <label>Description:</label>
             <textarea name="deskripsi"></textarea>
 
             <label>Stok:</label>
             <input type="number" name="stok" min="0" required>
 
-            <button type="submit">Simpan</button>
-            <a href="index.php">Kembali</a>
+            <button type="submit">Save</button>
+            <a href="index.php">Back</a>
         </form>
     </div>
 </body>

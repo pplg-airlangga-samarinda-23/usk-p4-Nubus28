@@ -17,18 +17,18 @@ if (!isset($_SESSION['user']) || $_SESSION['role'] !== 'anggota') {
     <div class="member-container">
         <h1>Member Dashboard</h1>
         <a href="logout.php">Logout</a>
-        <h2>Selamat datang, <?php echo htmlspecialchars($_SESSION['user']); ?></h2>
+        <h2>Welcome, <?php echo htmlspecialchars($_SESSION['user']); ?></h2>
 
         <div class="services">
             <div class="card">
-                <h3>Layanan Peminjaman Buku</h3>
-                <p><a href="form_pinjam.php">Pinjam Buku</a></p>
-                <p><a href="form_kembali.php">Kembalikan Buku</a></p>
+                <h3>Borrowing book</h3>
+                <p><a href="form_pinjam.php">borrow</a></p>
+                <p><a href="form_kembali.php">return</a></p>
             </div>
 
             <div class="card">
-                <h3>Menu Lainnya</h3>
-                <p><a href="index.php">Kembali ke Beranda</a></p>
+                <h3>other</h3>
+                <p><a href="index.php">back to home</a></p>
             </div>
         </div>
     </div>

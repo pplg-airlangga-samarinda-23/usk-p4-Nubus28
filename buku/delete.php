@@ -33,18 +33,18 @@ if (isset($_GET['id'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hapus Buku</title>
+    <title>Delete Book</title>
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <div class="box">
-        <h1>Hapus Buku</h1>
-        <p>Apakah anda yakin ingin menghapus buku ini?</p>
+        <h1>Delete Book</h1>
+        <p>Are you sure you want to delete this book?</p>
         <p><strong><?php echo htmlspecialchars($book['judul']); ?></strong></p>
 
         <form method="POST">
-            <button type="submit">Hapus</button>
-            <a href="index.php">Batal</a>
+            <button type="submit">Delete</button>
+            <a href="index.php">Cancel</a>
         </form>
     </div>
 </body>

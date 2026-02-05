@@ -62,20 +62,20 @@ $peminjaman = $conn->query("
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Daftar Buku</title>
+    <title>booklist</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="member-container">
-        <h1>Daftar Buku</h1>
+        <h1>book</h1>
         <?php if (!empty($message)) echo $message; ?>
 
         <!-- Form Pencarian -->
         <div class="box">
-            <h3>Cari Buku</h3>
+            <h3>Search Book</h3>
             <form method="GET" action="">
-                <input type="text" name="search" placeholder="Masukkan judul buku..." required>
-                <button type="submit">Cari</button>
+                <input type="text" name="search" placeholder="Enter book title..." required>
+                <button type="submit">Search</button>
             </form>
         </div>
 
@@ -124,13 +124,13 @@ $peminjaman = $conn->query("
 
         <!-- Daftar Buku -->
         <div class="box">
-            <h2>Semua Buku</h2>
+            <h2>All Books</h2>
             <table>
                 <tr>
-                    <th>Judul</th>
+                    <th>Namebook</th>
                     <th>Genre</th>
                     <th>Stok</th>
-                    <th>Aksi</th>
+                    <th>Action</th>
                 </tr>
                 <?php while($row = $books->fetch_assoc()) { ?>
                     <tr>
@@ -143,10 +143,10 @@ $peminjaman = $conn->query("
                             <?php if ($row['stok'] > 0) { ?>
                                 <form method="POST" style="display:inline;">
                                     <input type="hidden" name="id_book" value="<?php echo $row['id']; ?>">
-                                    <button type="submit" name="pinjam">Pinjam</button>
+                                    <button type="submit" name="pinjam">Borrow</button>
                                 </form>
                             <?php } else { ?>
-                                Tidak tersedia
+                                not available
                             <?php } ?>
                         </td>
                     </tr>
@@ -156,13 +156,13 @@ $peminjaman = $conn->query("
 
         <!-- Riwayat Peminjaman -->
         <div class="box">
-            <h2>Riwayat Peminjaman</h2>
+            <h2>History of Borrowed Books</h2>
             <table>
                 <tr>
-                    <th>Judul</th>
+                    <th>Namebook</th>
                     <th>Genre</th>
-                    <th>Tanggal Pinjam</th>
-                    <th>Tanggal Kembali</th>
+                    <th>date Borrowed</th>
+                    <th>date Returned</th>
                     <th>Status</th>
                     <th>Aksi</th>
                 </tr>
@@ -181,7 +181,7 @@ $peminjaman = $conn->query("
                             <?php if (!$row['tgl_kembali']) { ?>
                                 <form method="POST" style="display:inline;">
                                     <input type="hidden" name="id_pinjam" value="<?php echo $row['id']; ?>">
-                                    <button type="submit" name="kembali">Kembalikan</button>
+                                    <button type="submit" name="kembali">Return</button>
                                 </form>
                             <?php } else { ?>
                                 -
@@ -192,7 +192,7 @@ $peminjaman = $conn->query("
             </table>
         </div>
 
-        <a href="dashboard_user.php">Kembali ke Dashboard</a>
+        <a href="dashboar_anggota.php">home</a>
     </div>
 </body>
 </html>

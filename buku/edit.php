@@ -53,10 +53,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form class="auth-form" method="POST">
             <h1>Edit Buku</h1>
 
-            <label>Judul:</label>
+            <label>Namebook:</label>
             <input type="text" name="judul" value="<?php echo htmlspecialchars($book['judul']); ?>" required>
 
-            <label>Pengarang:</label>
+            <label>Author:</label>
             <input type="text" name="pengarang" value="<?php echo htmlspecialchars($book['pengarang']); ?>">
 
             <label>Genre:</label>
@@ -67,14 +67,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <option value="Comedy" <?php echo ($book['genre'] == 'Comedy') ? 'selected' : ''; ?>>Comedy</option>
             </select>
 
-            <label>Deskripsi:</label>
+            <label>Description:</label>
             <textarea name="deskripsi" rows="4"><?php echo htmlspecialchars($book['deskripsi']); ?></textarea>
 
             <label>Stok:</label>
             <input type="number" name="stok" value="<?php echo htmlspecialchars($book['stok']); ?>" min="0" required>
 
-            <button type="submit">Simpan</button>
-            <a href="index.php">Batal</a>
+            <button type="submit">Save</button>
+            <a href="index.php">Back</a>
         </form>
     </div>
 </body>

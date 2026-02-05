@@ -9,7 +9,7 @@
 <body>
     <!-- Header with logo and navigation -->
     <header>
-        <h1>Perpustakaan Neenee</h1>
+        <h1>neenee library</h1>
         <img src="chibi10-removebg-preview.png" alt="Library Logo" class="logo">
        
     </header>
@@ -24,20 +24,20 @@
     <div class="features">
         <div class="card">
             <h3>Login</h3>
-            <p>Akses akun Anda untuk meminjam dan mengelola buku.</p>
+            <p>you can login as user or admin.</p>
             <a href="login.php">Login</a>
         </div>
 
         <div class="card">
             <h3>Register</h3>
-            <p>Buat akun baru untuk bergabung sebagai anggota perpustakaan.</p>
+            <p>making account for user are not having account.</p>
             <a href="register.php">Register</a>
         </div>
     </div>
 
     <!-- Footer -->
     <footer>
-        <p>&copy; <?php echo date("Y"); ?> Perpustakaan Neenee. All rights reserved.</p>
+        <p>&copy; <?php echo date("Y"); ?> neenee library. All rights reserved.</p>
     </footer>
 </body>
 </html>

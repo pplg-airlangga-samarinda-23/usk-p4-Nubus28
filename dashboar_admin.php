@@ -82,8 +82,8 @@ $users = $conn->query("SELECT username, role FROM User");
     <div class="admin-container">
         <h1>Admin Dashboard</h1>
         <a href="logout.php">Logout</a>
-        <a href="buku/index.php">Buku</a>
-        <h2>Selamat datang, <?php echo htmlspecialchars($_SESSION['user']); ?></h2>
+        <a href="buku/index.php">Book</a>
+        <h2>Welcome admin!, <?php echo htmlspecialchars($_SESSION['user']); ?></h2>
 
         <?php if (!empty($message)): ?>
             <?php if (strpos($message, '✅') !== false): ?>
@@ -100,7 +100,7 @@ $users = $conn->query("SELECT username, role FROM User");
                 <input type="text" name="new_username" placeholder="Username" required>
                 <input type="password" name="new_password" placeholder="Password" required>
                 <select name="role" required>
-                    <option value="anggota">Anggota</option>
+                    <option value="anggota">member</option>
                     <option value="admin">Admin</option>
                 </select>
                 <button type="submit" name="add">Add</button>
@@ -131,7 +131,7 @@ $users = $conn->query("SELECT username, role FROM User");
         </div>
 
         <div class="box">
-            <h3>Daftar User</h3>
+            <h3> User</h3>
             <table>
                 <tr><th>Username</th><th>Role</th></tr>
                 <?php while ($row = $users->fetch_assoc()): ?>

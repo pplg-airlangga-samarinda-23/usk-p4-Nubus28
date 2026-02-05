@@ -30,23 +30,23 @@ $riwayat = $conn->query("
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Daftar Buku</title>
+    <title>List for book</title>
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <div class="admin-container">
-        <h1>Daftar Buku</h1>
-        <a href="../dashboar_admin.php">← Kembali ke Beranda</a>
-        <a href="create.php">+ Tambah Buku</a>
+        <h1>list book</h1>
+        <a href="../dashboar_admin.php">← home</a>
+        <a href="create.php">+ Add</a>
 
         <?php if (!empty($message)): ?>
             <div class="alert alert-success"><?php echo $message; ?></div>
         <?php endif; ?>
 
         <form method="GET" class="mb-20">
-            <label>Filter berdasarkan Genre:</label>
+            <label>Filter:</label>
             <select name="genre" onchange="this.form.submit()">
-                <option value="">-- Semua Genre --</option>
+                <option value="">-- all Genre --</option>
                 <option value="Romance" <?php echo (isset($_GET['genre']) && $_GET['genre']=='Romance')?'selected':''; ?>>Romance</option>
                 <option value="Action" <?php echo (isset($_GET['genre']) && $_GET['genre']=='Action')?'selected':''; ?>>Action</option>
                 <option value="Comedy" <?php echo (isset($_GET['genre']) && $_GET['genre']=='Comedy')?'selected':''; ?>>Comedy</option>
@@ -58,12 +58,12 @@ $riwayat = $conn->query("
                 <table>
                     <tr>
                         <th>No</th>
-                        <th>Judul</th>
-                        <th>Pengarang</th>
+                        <th>name book</th>
+                        <th>author</th>
                         <th>Genre</th>
-                        <th>Deskripsi</th>
+                        <th>Description</th>
                         <th>Stok</th>
-                        <th>Aksi</th>
+                        <th>Action</th>
                     </tr>
                     <?php $no=1; while($row=$result->fetch_assoc()): ?>
                         <tr>
@@ -81,22 +81,22 @@ $riwayat = $conn->query("
                     <?php endwhile; ?>
                 </table>
             <?php else: ?>
-                <p>Tidak ada buku.</p>
+                <p>not avalible.</p>
             <?php endif; ?>
         </div>
 
         <div class="box">
-            <h2>Riwayat Peminjaman</h2>
+            <h2>Historu</h2>
             <?php if ($riwayat->num_rows > 0): ?>
                 <table>
                     <tr>
                         <th>ID</th>
-                        <th>Judul</th>
+                        <th>Book Name</th>
                         <th>Genre</th>
                         <th>User</th>
-                        <th>Tgl Pinjam</th>
-                        <th>Tgl Kembali</th>
-                        <th>Aksi</th>
+                        <th>Date Borrowed</th>
+                        <th>Date Returned</th>
+                        <th>Action</th>
                     </tr>
                     <?php while($row=$riwayat->fetch_assoc()): ?>
                         <tr>
@@ -116,7 +116,7 @@ $riwayat = $conn->query("
                     <?php endwhile; ?>
                 </table>
             <?php else: ?>
-                <p>Tidak ada riwayat peminjaman.</p>
+                <p>No borrowing history available.</p>
             <?php endif; ?>
         </div>
     </div>
