@@ -29,6 +29,7 @@ structure
       >login.php
       >logout.php
       >register.php
+      >style.css
       >users.json (save user)
 Tools
 (php,vscode,xampp)
@@ -48,3 +49,5 @@ Fitur
 
 and that's all for my code since it's just was my firts making online library so
 i'm sorry if there's still not really good
+
+(new things i added some css and for that all files and also updated a liitle bit current code)
