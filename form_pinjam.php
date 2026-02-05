@@ -12,6 +12,7 @@ $user = $user_result->fetch_assoc();
 $user_id = $user['id'];
 
 // ================== PROSES PINJAM ==================
+$message = "";
 if (isset($_POST['pinjam'])) {
     $id_book = (int)$_POST['id_book'];
     $tgl_pinjam = date("Y-m-d");
@@ -22,9 +23,9 @@ if (isset($_POST['pinjam'])) {
     if ($data['stok'] > 0) {
         $conn->query("INSERT INTO peminjaman (id_book, id_user, tgl_pinjam) VALUES ($id_book, $user_id, '$tgl_pinjam')");
         $conn->query("UPDATE Book SET stok = stok - 1 WHERE id = $id_book");
-        echo "<p style='color:green;'>Buku berhasil dipinjam!</p>";
+        $message = "<div class='alert alert-success'>Buku berhasil dipinjam!</div>";
     } else {
-        echo "<p style='color:red;'>Stok buku habis!</p>";
+        $message = "<div class='alert alert-error'>Stok buku habis!</div>";
     }
 }
 
@@ -43,7 +44,7 @@ if (isset($_POST['kembali'])) {
     // tambah stok
     $conn->query("UPDATE Book SET stok = stok + 1 WHERE id = $id_book");
 
-    echo "<p style='color:blue;'>Buku berhasil dikembalikan!</p>";
+    $message = "<div class='alert alert-success'>Buku berhasil dikembalikan!</div>";
 }
 
 // ================== AMBIL SEMUA BUKU ==================
@@ -62,130 +63,137 @@ $peminjaman = $conn->query("
 <head>
     <meta charset="UTF-8">
     <title>Daftar Buku</title>
-    <style>
-        table { border-collapse: collapse; width: 80%; margin-bottom: 20px; }
-        th, td { border: 1px solid #333; padding: 8px; text-align: center; }
-        th { background: #eee; }
-        .habis { color: red; font-weight: bold; }
-        .tersedia { color: green; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Daftar Buku</h1>
+    <div class="member-container">
+        <h1>Daftar Buku</h1>
+        <?php if (!empty($message)) echo $message; ?>
 
-    <!-- Form Pencarian -->
-    <h3>Cari Buku</h3>
-    <form method="GET" action="">
-        <input type="text" name="search" placeholder="Masukkan judul buku..." required>
-        <button type="submit">Cari</button>
-    </form>
+        <!-- Form Pencarian -->
+        <div class="box">
+            <h3>Cari Buku</h3>
+            <form method="GET" action="">
+                <input type="text" name="search" placeholder="Masukkan judul buku..." required>
+                <button type="submit">Cari</button>
+            </form>
+        </div>
 
-    <?php
-    // ================== HASIL PENCARIAN ==================
-    if (isset($_GET['search'])) {
-        $search = $conn->real_escape_string($_GET['search']);
-        $query = "SELECT * FROM Book WHERE judul LIKE '%$search%'";
-        $result = $conn->query($query);
+        <?php
+        // ================== HASIL PENCARIAN ==================
+        if (isset($_GET['search'])) {
+            $search = $conn->real_escape_string($_GET['search']);
+            $query = "SELECT * FROM Book WHERE judul LIKE '%$search%'";
+            $result = $conn->query($query);
 
-        if ($result && $result->num_rows > 0) {
-            echo "<h3>Hasil Pencarian:</h3>";
-            echo "<table>
-                    <tr>
-                        <th>Judul</th>
-                        <th>Genre</th>
-                        <th>Stok</th>
-                        <th>Aksi</th>
-                    </tr>";
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>
-                        <td>{$row['judul']}</td>
-                        <td>{$row['genre']}</td>
-                        <td class='" . ($row['stok'] > 0 ? "tersedia" : "habis") . "'>
-                            " . ($row['stok'] > 0 ? $row['stok'] : "Habis") . "
-                        </td>
-                        <td>";
-                if ($row['stok'] > 0) {
-                    echo "<form method='POST' style='display:inline;'>
-                            <input type='hidden' name='id_book' value='{$row['id']}'>
-                            <button type='submit' name='pinjam'>Pinjam</button>
-                          </form>";
-                } else {
-                    echo "Tidak tersedia";
+            echo "<div class='box'>";
+            if ($result && $result->num_rows > 0) {
+                echo "<h3>Hasil Pencarian:</h3>";
+                echo "<table>
+                        <tr>
+                            <th>Judul</th>
+                            <th>Genre</th>
+                            <th>Stok</th>
+                            <th>Aksi</th>
+                        </tr>";
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>
+                            <td>".htmlspecialchars($row['judul'])."</td>
+                            <td>".htmlspecialchars($row['genre'])."</td>
+                            <td class='".($row['stok']>0?"tersedia":"habis")."'>".
+                                ($row['stok']>0?$row['stok']:"Habis")."
+                            </td>
+                            <td>";
+                    if ($row['stok'] > 0) {
+                        echo "<form method='POST' style='display:inline;'>
+                                <input type='hidden' name='id_book' value='{$row['id']}'>
+                                <button type='submit' name='pinjam'>Pinjam</button>
+                              </form>";
+                    } else {
+                        echo "Tidak tersedia";
+                    }
+                    echo "</td></tr>";
                 }
-                echo "</td>
-                      </tr>";
+                echo "</table>";
+            } else {
+                echo "<p>Buku tidak ditemukan.</p>";
             }
-            echo "</table><hr>";
-        } else {
-            echo "<p>Buku tidak ditemukan.</p><hr>";
+            echo "</div>";
         }
-    }
-    ?>
+        ?>
 
-    <!-- Daftar Buku -->
-    <h2>Semua Buku</h2>
-    <table>
-        <tr>
-            <th>Judul</th>
-            <th>Genre</th>
-            <th>Stok</th>
-            <th>Aksi</th>
-        </tr>
-        <?php while($row = $books->fetch_assoc()) { ?>
-            <tr>
-                <td><?php echo $row['judul']; ?></td>
-                <td><?php echo $row['genre']; ?></td>
-                <td class="<?php echo $row['stok'] > 0 ? 'tersedia' : 'habis'; ?>">
-                    <?php echo $row['stok'] > 0 ? $row['stok'] : "Habis"; ?>
-                </td>
-                <td>
-                    <?php if ($row['stok'] > 0) { ?>
-                        <form method="POST" style="display:inline;">
-                            <input type="hidden" name="id_book" value="<?php echo $row['id']; ?>">
-                            <button type="submit" name="pinjam">Pinjam</button>
-                        </form>
-                    <?php } else { ?>
-                        Tidak tersedia
-                    <?php } ?>
-                </td>
-            </tr>
-        <?php } ?>
-    </table>
+        <!-- Daftar Buku -->
+        <div class="box">
+            <h2>Semua Buku</h2>
+            <table>
+                <tr>
+                    <th>Judul</th>
+                    <th>Genre</th>
+                    <th>Stok</th>
+                    <th>Aksi</th>
+                </tr>
+                <?php while($row = $books->fetch_assoc()) { ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($row['judul']); ?></td>
+                        <td><?php echo htmlspecialchars($row['genre']); ?></td>
+                        <td class="<?php echo $row['stok'] > 0 ? 'tersedia' : 'habis'; ?>">
+                            <?php echo $row['stok'] > 0 ? $row['stok'] : "Habis"; ?>
+                        </td>
+                        <td>
+                            <?php if ($row['stok'] > 0) { ?>
+                                <form method="POST" style="display:inline;">
+                                    <input type="hidden" name="id_book" value="<?php echo $row['id']; ?>">
+                                    <button type="submit" name="pinjam">Pinjam</button>
+                                </form>
+                            <?php } else { ?>
+                                Tidak tersedia
+                            <?php } ?>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </table>
+        </div>
 
-    <!-- Riwayat Peminjaman -->
-    <h2>Riwayat Peminjaman</h2>
-    <table>
-        <tr>
-            <th>Judul</th>
-            <th>Genre</th>
-            <th>Tanggal Pinjam</th>
-            <th>Tanggal Kembali</th>
-            <th>Status</th>
-            <th>Aksi</th>
-        </tr>
-        <?php while($row = $peminjaman->fetch_assoc()) { ?>
-            <tr>
-                <td><?php echo $row['judul']; ?></td>
-                <td><?php echo $row['genre']; ?></td>
-                <td><?php echo $row['tgl_pinjam']; ?></td>
-                <td><?php echo $row['tgl_kembali'] ? $row['tgl_kembali'] : "-"; ?></td>
-                <td>
-                    <?php echo $row['tgl_kembali'] ? "<span style='color:blue;'>Dikembalikan</span>" : "<span style='color:red;'>Dipinjam</span>"; ?>
-                </td>
-                <td>
-                    <?php if (!$row['tgl_kembali']) { ?>
-                        <form method="POST" style="display:inline;">
-                            <input type="hidden" name="id_pinjam" value="<?php echo $row['id']; ?>">
-                            <button type="submit" name="kembali">Kembalikan</button>
-                        </form>
-                    <?php } else { ?>
-                        -
-                    <?php } ?>
-                </td>
-            </tr>
-        <?php } ?>
-    </table>
+        <!-- Riwayat Peminjaman -->
+        <div class="box">
+            <h2>Riwayat Peminjaman</h2>
+            <table>
+                <tr>
+                    <th>Judul</th>
+                    <th>Genre</th>
+                    <th>Tanggal Pinjam</th>
+                    <th>Tanggal Kembali</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+                <?php while($row = $peminjaman->fetch_assoc()) { ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($row['judul']); ?></td>
+                        <td><?php echo htmlspecialchars($row['genre']); ?></td>
+                        <td><?php echo $row['tgl_pinjam']; ?></td>
+                        <td><?php echo $row['tgl_kembali'] ? $row['tgl_kembali'] : "-"; ?></td>
+                        <td>
+                            <?php echo $row['tgl_kembali'] 
+                                ? "<span class='tersedia'>Dikembalikan</span>" 
+                                : "<span class='habis'>Dipinjam</span>"; ?>
+                        </td>
+                        <td>
+                            <?php if (!$row['tgl_kembali']) { ?>
+                                <form method="POST" style="display:inline;">
+                                    <input type="hidden" name="id_pinjam" value="<?php echo $row['id']; ?>">
+                                    <button type="submit" name="kembali">Kembalikan</button>
+                                </form>
+                            <?php } else { ?>
+                                -
+                            <?php } ?>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </table>
+        </div>
 
-    <br><a href="dashboar_anggota.php">Kembali ke Dashboard</a>
+        <a href="dashboard_user.php">Kembali ke Dashboard</a>
+    </div>
 </body>
 </html>
+<?php $conn->close(); ?>

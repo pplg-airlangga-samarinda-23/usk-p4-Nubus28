@@ -4,7 +4,6 @@ session_start();
 $file = "users.json";
 $users = file_exists($file) ? json_decode(file_get_contents($file), true) : [];
 
-
 $adminUser = "admin";
 $adminPass = "123"; 
 $adminHash = password_hash($adminPass, PASSWORD_DEFAULT);
@@ -13,7 +12,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
 
-   
     if ($username === $adminUser && password_verify($password, $adminHash)) {
         $_SESSION["user"] = $username;
         $_SESSION["role"] = "admin";
@@ -28,12 +26,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             header("Location: dashboar_anggota.php");
             exit;
         } else {
-            echo " Invalid password.";
+            echo "<div class='alert alert-error'>Invalid password.</div>";
         }
     } else {
-        echo " User not found. Please register.";
+        echo "<div class='alert alert-error'>User not found. Please register.</div>";
     }
-    
 }
 ?>
 
@@ -41,20 +38,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <html lang="en">
 <head>
     <title>Login</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Login</h1>
-    <form action="" method="post">
-        <div>
+    <div class="auth-container">
+        <form class="auth-form" method="post">
+            <h1>Login</h1>
             <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required><br><br>
-        </div>    
-        <div>
+            <input type="text" id="username" name="username" required>
+
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required><br><br>
-        </div>
-        <button type="submit">Login</button>
-        <a href="register.php">Register</a>
-    </form>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Login</button>
+            <a href="register.php">Register</a>
+        </form>
+    </div>
 </body>
 </html>

@@ -17,7 +17,7 @@ $message = "";
 if (isset($_POST['add'])) {
     $u = $conn->real_escape_string($_POST['new_username']);
     $p = password_hash($_POST['new_password'], PASSWORD_DEFAULT);
-    $role = $conn->real_escape_string($_POST['role']); // role selector
+    $role = $conn->real_escape_string($_POST['role']);
 
     $check = $conn->query("SELECT id FROM User WHERE username='$u'");
     if ($check->num_rows > 0) {
@@ -76,72 +76,72 @@ $users = $conn->query("SELECT username, role FROM User");
 <head>
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
-    <style>
-        .box { border: 1px solid black; padding: 15px; margin-top: 20px; }
-        table { border-collapse: collapse; width: 50%; }
-        table, th, td { border: 1px solid black; padding: 5px; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Admin Dashboard</h1>
-    <a href="logout.php">Logout</a>
-    <a href="buku/index.php">buku</a>
-    <h2>Selamat datang, <?php echo htmlspecialchars($_SESSION['user']); ?></h2>
+    <div class="admin-container">
+        <h1>Admin Dashboard</h1>
+        <a href="logout.php">Logout</a>
+        <a href="buku/index.php">Buku</a>
+        <h2>Selamat datang, <?php echo htmlspecialchars($_SESSION['user']); ?></h2>
 
-    <?php if (!empty($message)) echo "<p><strong>$message</strong></p>"; ?>
+        <?php if (!empty($message)): ?>
+            <?php if (strpos($message, '✅') !== false): ?>
+                <div class="alert alert-success"><?php echo $message; ?></div>
+            <?php else: ?>
+                <div class="alert alert-error"><?php echo $message; ?></div>
+            <?php endif; ?>
+        <?php endif; ?>
 
-    <div class="box">
-        <h3>Manajemen User</h3>
+        <div class="admin-actions">
+            <!-- Add User -->
+            <form method="post">
+                <h3>Add User</h3>
+                <input type="text" name="new_username" placeholder="Username" required>
+                <input type="password" name="new_password" placeholder="Password" required>
+                <select name="role" required>
+                    <option value="anggota">Anggota</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <button type="submit" name="add">Add</button>
+            </form>
 
-        <!-- Add User -->
-        <form method="post">
-            <input type="text" name="new_username" placeholder="Username" required>
-            <input type="password" name="new_password" placeholder="Password" required>
-            <select name="role" required>
-                <option value="anggota">Anggota</option>
-                <option value="admin">Admin</option>
-            </select>
-            <button type="submit" name="add">Add</button>
-        </form>
+            <!-- Edit User -->
+            <form method="post">
+                <h3>Edit User</h3>
+                <input type="text" name="edit_username" placeholder="Current Username" required>
+                <input type="text" name="new_username" placeholder="New Username" required>
+                <button type="submit" name="edit">Update Username</button>
+            </form>
 
-        <!-- Edit User -->
-        <form method="post">
-            <input type="text" name="edit_username" placeholder="Current Username" required>
-            <input type="text" name="new_username" placeholder="New Username" required>
-            <button type="submit" name="edit">Update Username</button>
-        </form>
+            <!-- Delete User -->
+            <form method="post">
+                <h3>Delete User</h3>
+                <input type="text" name="delete_username" placeholder="Username" required>
+                <button type="submit" name="delete">Delete</button>
+            </form>
 
-        <!-- Delete User -->
-        <form method="post">
-            <input type="text" name="delete_username" placeholder="Username" required>
-            <button type="submit" name="delete">Delete</button>
-        </form>
+            <!-- Reset Password -->
+            <form method="post">
+                <h3>Reset Password</h3>
+                <input type="text" name="reset_username" placeholder="Username" required>
+                <input type="password" name="new_password" placeholder="New Password" required>
+                <button type="submit" name="reset">Reset Password</button>
+            </form>
+        </div>
 
-        <!-- Reset Password -->
-        <form method="post">
-            <input type="text" name="reset_username" placeholder="Username" required>
-            <input type="password" name="new_password" placeholder="New Password" required>
-            <button type="submit" name="reset">Reset Password</button>
-        </form>
-
-        <hr>
-
-        <h3>Daftar User</h3>
-        <table>
-            <tr>
-                <th>Username</th>
-                <th>Role</th>
-            </tr>
-            <?php while ($row = $users->fetch_assoc()): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($row['username']); ?></td>
-                    <td><?php echo htmlspecialchars($row['role']); ?></td>
-                </tr>
-            <?php endwhile; ?>
-        </table>
+        <div class="box">
+            <h3>Daftar User</h3>
+            <table>
+                <tr><th>Username</th><th>Role</th></tr>
+                <?php while ($row = $users->fetch_assoc()): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($row['username']); ?></td>
+                        <td><?php echo htmlspecialchars($row['role']); ?></td>
+                    </tr>
+                <?php endwhile; ?>
+            </table>
+        </div>
     </div>
-
-    <hr>
-   
 </body>
 </html>

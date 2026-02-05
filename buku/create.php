@@ -15,23 +15,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             VALUES ('$judul', '$pengarang', '$deskripsi', '$genre', $stok)";
 
     if ($conn->query($sql)) {
-        echo "Buku berhasil ditambahkan!";
+        echo "<div class='alert alert-success'>Buku berhasil ditambahkan!</div>";
     } else {
-        echo "Error: " . $conn->error;
+        echo "<div class='alert alert-error'>Error: " . $conn->error . "</div>";
     }
 }
 ?>
-<form method="POST">
-    Judul: <input type="text" name="judul" required><br>
-    Pengarang: <input type="text" name="pengarang"><br>
-    Genre: 
-    <select name="genre" required>
-        <option value="Romance">Romance</option>
-        <option value="Action">Action</option>
-        <option value="Comedy">Comedy</option>
-    </select><br>
-    Deskripsi: <textarea name="deskripsi"></textarea><br>
-    Stok: <input type="number" name="stok" min="0" required><br>
-    <button type="submit">Simpan</button>
-    <a href="index.php">kembali</a>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tambah Buku</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="auth-container">
+        <form class="auth-form" method="POST">
+            <h1>Tambah Buku</h1>
+
+            <label>Judul:</label>
+            <input type="text" name="judul" required>
+
+            <label>Pengarang:</label>
+            <input type="text" name="pengarang">
+
+            <label>Genre:</label>
+            <select name="genre" required>
+                <option value="Romance">Romance</option>
+                <option value="Action">Action</option>
+                <option value="Comedy">Comedy</option>
+            </select>
+
+            <label>Deskripsi:</label>
+            <textarea name="deskripsi"></textarea>
+
+            <label>Stok:</label>
+            <input type="number" name="stok" min="0" required>
+
+            <button type="submit">Simpan</button>
+            <a href="index.php">Kembali</a>
+        </form>
+    </div>
+</body>
+</html>

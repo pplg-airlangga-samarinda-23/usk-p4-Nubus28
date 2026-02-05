@@ -7,42 +7,46 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $password = $_POST["password"];
 
     if ($username === "admin") {
-        echo "❌ You cannot register as admin.";
+        echo "<div class='alert alert-error'>❌ You cannot register as admin.</div>";
         exit;
     }
 
     if (isset($users[$username])) {
-        echo "❌ Username already taken.";
+        echo "<div class='alert alert-error'>❌ Username already taken.</div>";
     } else {
         $users[$username] = password_hash($password, PASSWORD_DEFAULT);
         file_put_contents($file, json_encode($users));
-        
+
         $conn = new mysqli('localhost', 'root', '', 'perpustakaan');
         $hashed = password_hash($password, PASSWORD_DEFAULT);
         $insert_sql = "INSERT INTO User (username, password, role) VALUES ('" . $conn->real_escape_string($username) . "', '" . $conn->real_escape_string($hashed) . "', 'anggota')";
         $conn->query($insert_sql);
         $conn->close();
-        
-        echo "✅ Registration successful. You can now login.";
+
+        echo "<div class='alert alert-success'>✅ Registration successful. You can now login.</div>";
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Register</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Register</h1>
-    <form method="post">
-        <label for="username">Choose Username:</label>
-        <input type="text" id="username" name="username" required><br><br>
-        <label for="password">Choose Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
-        <button type="submit">Register</button>
-        <a href="login.php">Login</a>
-    </form>
+    <div class="auth-container">
+        <form class="auth-form" method="post">
+            <h1>Register</h1>
+            <label for="username">Choose Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Choose Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Register</button>
+            <a href="login.php">Login</a>
+        </form>
+    </div>
 </body>
 </html>
